@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loan and Mortgage Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            margin-top: 0;
+            padding-top: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        
+        .button {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            background-color: #4caf50;
+            color: #ffffff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .result {
+            margin-top: 20px;
+        }
+        
+        @media screen and (max-width: 640px) {
+            .container {
+                max-width: 100%;
+                padding: 10px;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Loan and Mortgage Calculator</h1>
+        <form id="calculatorForm">
+            <div class="form-group">
+                <label for="loanAmount">Loan Amount:</label>
+                <input type="text" id="loanAmount" placeholder="Enter loan amount" required>
+            </div>
+            <div class="form-group">
+                <label for="interestRate">Interest Rate:</label>
+                <input type="text" id="interestRate" placeholder="Enter interest rate" required>
+            </div>
+            <div class="form-group">
+                <label for="loanTerm">Loan Term:</label>
+                <select id="loanTerm" required>
+                    <option value="1">1 year</option>
+                    <option value="2">2 years</option>
+                    <option value="3">3 years</option>
+                    <option value="4">4 years</option>
+                    <option value="5">5 years</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="paymentFrequency">Payment Frequency:</label>
+                <select id="paymentFrequency" required>
+                    <option value="monthly">Monthly</option>
+                    <option value="quarterly">Quarterly</option>
+                    <option value="half-yearly">Half-Yearly</option>
+                    <option value="annually">Annually</option>
+                </select>
+            </div>
+            <button type="submit" class="button">Calculate</button>
+        </form>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        document.getElementById("calculatorForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            calculateLoan();
+        });
+
+        function calculateLoan() {
+            var loanAmount = parseFloat(document.getElementById("loanAmount").value);
+            var interestRate = parseFloat(document.getElementById("interestRate").value);
+            var loanTerm = parseInt(document.getElementById("loanTerm").value);
+            var paymentFrequency = document.getElementById("paymentFrequency").value;
+
+            var monthlyInterestRate = interestRate / 100 / 12;
+            var totalPayments = loanTerm * 12;
+
+            var monthlyPayment = (loanAmount * monthlyInterestRate) / (1 - Math.pow(1 + monthlyInterestRate, -totalPayments));
+            var totalPayment = monthlyPayment * totalPayments;
+
+            var result = "Monthly Payment: $" + monthlyPayment.toFixed(2) + "<br>";
+            result += "Total Payment: $" + totalPayment.toFixed(2);
+
+            document.getElementById("result").innerHTML = result;
+        }
+    </script>
+</body>
+</html>
